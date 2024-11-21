@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchMenuData() async {
     final String url =
-        "${AppConstants.baseURL}/API/getMenu.php?kategori=$selectedCategory";
+        "${AppConstants.baseURL}/getMenu.php?kategori=$selectedCategory";
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchBestSellerMenu(String category) async {
     final String url =
-        "${AppConstants.baseURL}/API/bestSeller.php?kategori=$selectedCategory";
+        "${AppConstants.baseURL}/bestSeller.php?kategori=$category";
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -288,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                     price: 'Rp ${menu['harga_menu'] ?? '0'}',
                     description:
                         menu['deskripsi'] ?? 'Deskripsi tidak tersedia',
-                    idMenu: menu['id_menu'] ?? '',
+                    idMenu: menu['kategori_menu'] ?? '',
                     idPelanggan: idPelanggan,
                     refreshMenuList: fetchMenuData,
                   );

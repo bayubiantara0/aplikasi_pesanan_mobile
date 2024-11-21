@@ -26,9 +26,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   // final String _sUrlPelanggan = "http://10.0.164.244/Proyek%203/API/Pelanggan.php";
-  final String _sUrlPelanggan = "${AppConstants.baseURL}/API/Pelanggan.php";
+  final String _sUrlPelanggan = "${AppConstants.baseURL}/Pelanggan.php";
   // final String _sUrlDriver = "http://10.0.164.244/Proyek%203/API/Driver.php";
-  final String _sUrlDriver = "${AppConstants.baseURL}/API/Driver.php";
+  final String _sUrlDriver = "${AppConstants.baseURL}/Driver.php";
 
   @override
   void dispose() {
