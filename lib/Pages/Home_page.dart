@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wkwk/header.dart';
-import 'Menu_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wkwk/config/app_constants.dart';
+import 'package:wkwk/header.dart';
+import 'package:wkwk/Pages/Menu_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,8 +16,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<dynamic> menuList = [];
+  List<dynamic> filteredMenuList = [];
   String selectedCategory = 'paketan';
   String idPelanggan = '';
+  String searchQuery = '';
+  bool isAscending = true;
+  bool isBestSellerSelected = false;
 
   @override
   void initState() {
@@ -45,10 +49,15 @@ class _HomePageState extends State<HomePage> {
         if (data != null && data['data'] is List) {
           setState(() {
             menuList = List.from(data['data']);
+            filteredMenuList = menuList;
+            if (!isBestSellerSelected) {
+              _applySorting();
+            }
           });
         } else {
           setState(() {
             menuList = [];
+            filteredMenuList = [];
           });
         }
       } else {
@@ -58,6 +67,41 @@ class _HomePageState extends State<HomePage> {
       print("Error: $e");
       setState(() {
         menuList = [];
+        filteredMenuList = [];
+      });
+    }
+  }
+
+  Future<void> fetchBestSellerMenu(String category) async {
+    final String url =
+        "${AppConstants.baseURL}/API/bestSeller.php?kategori=$selectedCategory";
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data != null && data['data'] is List) {
+          setState(() {
+            menuList = List.from(data['data']);
+            filteredMenuList = menuList;
+            if (!isBestSellerSelected) {
+              _applySorting();
+            }
+          });
+        } else {
+          setState(() {
+            menuList = [];
+            filteredMenuList = [];
+          });
+        }
+      } else {
+        throw Exception('Gagal memuat menu Best Seller');
+      }
+    } catch (e) {
+      print("Error: $e");
+      setState(() {
+        menuList = [];
+        filteredMenuList = [];
       });
     }
   }
@@ -65,13 +109,45 @@ class _HomePageState extends State<HomePage> {
   void _changeCategory(String category) {
     setState(() {
       selectedCategory = category;
-      print("Kategori Terpilih: $selectedCategory");
-      fetchMenuData();
+      if (isBestSellerSelected) {
+        fetchBestSellerMenu(category);
+      } else {
+        fetchMenuData();
+      }
     });
   }
 
-  void _refreshMenuList() {
-    fetchMenuData();
+  void _toggleSortMenu() {
+    setState(() {
+      isAscending = !isAscending;
+      _applySorting();
+    });
+  }
+
+  void _applySorting() {
+    setState(() {
+      filteredMenuList.sort((a, b) {
+        if (isAscending) {
+          return double.parse(a['harga_menu'])
+              .compareTo(double.parse(b['harga_menu']));
+        } else {
+          return double.parse(b['harga_menu'])
+              .compareTo(double.parse(a['harga_menu']));
+        }
+      });
+    });
+  }
+
+  void _filterMenuList(String query) {
+    setState(() {
+      searchQuery = query;
+      filteredMenuList = menuList
+          .where((menu) => menu['nama_menu']
+              .toString()
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -91,7 +167,12 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () => _changeCategory('paketan'),
+                    onPressed: () {
+                      setState(() {
+                        isBestSellerSelected = false;
+                      });
+                      _changeCategory('paketan');
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: selectedCategory == 'paketan'
                           ? Colors.purple
@@ -112,7 +193,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () => _changeCategory('prasmanan'),
+                    onPressed: () {
+                      setState(() {
+                        isBestSellerSelected = false;
+                      });
+                      _changeCategory('prasmanan');
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: selectedCategory == 'prasmanan'
                           ? Colors.purple
@@ -136,11 +222,57 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TextField(
+                onChanged: (value) => _filterMenuList(value),
+                decoration: InputDecoration(
+                  labelText: 'Cari menu...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                spacing: 8.0,
+                alignment: WrapAlignment.end,
+                children: [
+                  ChoiceChip(
+                    label: Text('Best Seller'),
+                    selected: isBestSellerSelected,
+                    onSelected: (selected) {
+                      setState(() {
+                        isBestSellerSelected = selected;
+                        if (isBestSellerSelected) {
+                          fetchBestSellerMenu(selectedCategory);
+                        } else {
+                          fetchMenuData();
+                        }
+                      });
+                    },
+                  ),
+                  ChoiceChip(
+                    label: Text('Termurah'),
+                    selected: isAscending && !isBestSellerSelected,
+                    onSelected: (_) => _toggleSortMenu(),
+                  ),
+                  ChoiceChip(
+                    label: Text('Termahal'),
+                    selected: !isAscending && !isBestSellerSelected,
+                    onSelected: (_) => _toggleSortMenu(),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: menuList.length,
+                itemCount: filteredMenuList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8.0,
@@ -148,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                   childAspectRatio: 2 / 3,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  var menu = menuList[index];
+                  var menu = filteredMenuList[index];
 
                   return MenuCard(
                     imageUrl: menu['foto_menu_path'] ?? '',
@@ -158,7 +290,7 @@ class _HomePageState extends State<HomePage> {
                         menu['deskripsi'] ?? 'Deskripsi tidak tersedia',
                     idMenu: menu['id_menu'] ?? '',
                     idPelanggan: idPelanggan,
-                    refreshMenuList: _refreshMenuList,
+                    refreshMenuList: fetchMenuData,
                   );
                 },
               ),
