@@ -19,7 +19,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
 
   Future<void> fetchOrders() async {
     // Ganti dengan URL API yang sesuai
-    final String url = "${AppConstants.baseURL}/API/GetOrders.php";
+    final String url = "${AppConstants.baseURL}/GetOrders.php";
 
     try {
       final response = await http.get(Uri.parse(url));

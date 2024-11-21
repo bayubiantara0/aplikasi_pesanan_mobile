@@ -23,7 +23,7 @@ class _RatingPageState extends State<RatingPage> {
   Future<void> fetchRatings() async {
     try {
       final response =
-          await http.get(Uri.parse('${AppConstants.baseURL}/API/Rating.php'));
+          await http.get(Uri.parse('${AppConstants.baseURL}/Rating.php'));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

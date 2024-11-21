@@ -96,7 +96,7 @@ class _FormRatingPageState extends State<FormRatingPage> {
     }
 
     final String url =
-        "${AppConstants.baseURL}/API/FormRating.php"; // Ganti dengan URL API Anda
+        "${AppConstants.baseURL}/FormRating.php"; // Ganti dengan URL API Anda
 
     var request = http.MultipartRequest('POST', Uri.parse(url))
       ..fields['id_pelanggan'] = idPelanggan

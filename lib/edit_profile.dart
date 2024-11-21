@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:wkwk/config/app_constants.dart';
 
 class EditProfilPage extends StatefulWidget {
   final int idPelanggan;
@@ -26,7 +27,7 @@ class _EditProfilPageState extends State<EditProfilPage> {
   }
 
   Future<void> _fetchData() async {
-    final String url = "http://10.0.164.244/API/Pelanggan.php";
+    final String url = "${AppConstants.baseURL}/Pelanggan.php";
 
     try {
         final response = await http.get(Uri.parse(url));
@@ -130,7 +131,7 @@ class _EditProfilPageState extends State<EditProfilPage> {
   }
 
   void _simpanPerubahan() {
-    final String url = "http://10.0.164.244/API/Pelanggan.php?id_pelanggan=${widget.idPelanggan}";
+    final String url = "${AppConstants.baseURL}/Pelanggan.php?id_pelanggan=${widget.idPelanggan}";
 
     http.put(Uri.parse(url), body: {
       'nama': _namaController.text,

@@ -42,7 +42,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
       return;
     }
 
-    final String url = "${AppConstants.baseURL}/API/Transaksi.php";
+    final String url = "${AppConstants.baseURL}/Transaksi.php";
 
     double bayar =
         metodePembayaran == 'DP' ? widget.totalHarga / 2 : widget.totalHarga;

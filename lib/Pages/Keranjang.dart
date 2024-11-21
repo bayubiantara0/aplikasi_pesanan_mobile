@@ -45,7 +45,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
   }
 
   Future<void> ambilDataKeranjang() async {
-    final String url = "${AppConstants.baseURL}/API/keranjang.php";
+    final String url = "${AppConstants.baseURL}/keranjang.php";
     final response = await http.post(
       Uri.parse(url),
       body: {'id_pelanggan': idPelanggan},
@@ -80,7 +80,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
   }
 
   Future<void> perbaruiItemKeranjang(String idMenu, int jumlahBaru) async {
-    final String url = "${AppConstants.baseURL}/API/keranjang.php";
+    final String url = "${AppConstants.baseURL}/keranjang.php";
     final response = await http.post(
       Uri.parse(url),
       body: {
@@ -104,7 +104,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
   }
 
   Future<void> hapusItemKeranjang(String idMenu) async {
-    final String url = "${AppConstants.baseURL}/API/keranjang.php";
+    final String url = "${AppConstants.baseURL}/keranjang.php";
     final response = await http.post(
       Uri.parse(url),
       body: {

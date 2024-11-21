@@ -25,7 +25,7 @@ class MenuCard extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> addToCart(BuildContext context) async {
-    final String apiUrl = '${AppConstants.baseURL}/API/keranjang.php';
+    final String apiUrl = '${AppConstants.baseURL}/keranjang.php';
     final response = await http.post(
       Uri.parse(apiUrl),
       body: {

@@ -29,7 +29,7 @@ class _RiwayatTransaksiPageState extends State<RiwayatTransaksiPage> {
       return;
     }
 
-    final String url = "${AppConstants.baseURL}/API/Riwayat.php";
+    final String url = "${AppConstants.baseURL}/Riwayat.php";
     final response =
         await http.post(Uri.parse(url), body: {'id_pelanggan': idPelanggan});
 

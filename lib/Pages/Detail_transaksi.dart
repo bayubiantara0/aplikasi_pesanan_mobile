@@ -20,7 +20,7 @@ class DetailPesananPage extends StatelessWidget {
         transaksi['metode_pembayaran'] == 'LUNAS' ? totalHarga : totalHarga / 2;
 
     // Base URL untuk gambar menu
-    final String baseUrl = "${AppConstants.baseURL}/API/getDetailPesanan.php";
+    final String baseUrl = "${AppConstants.baseURL}/getDetailPesanan.php";
 
     return Scaffold(
       appBar: AppBar(

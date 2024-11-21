@@ -15,7 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isLoading = false;
 
   // Pastikan endpoint URL sesuai dengan perubahan di API
-  final String _sUrl = "${AppConstants.baseURL}/API/Register.php";
+  final String _sUrl = "${AppConstants.baseURL}/Register.php";
 
   @override
   void dispose() {
