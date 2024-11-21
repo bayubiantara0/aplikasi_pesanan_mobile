@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; // Pastikan mengimpor http
-import 'dart:convert'; // Pastikan mengimpor dart:convert
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wkwk/header.dart';
 import 'Menu_card.dart';
@@ -35,23 +35,16 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchMenuData() async {
     final String url =
-        "${AppConstants.baseURL}/API/menus?kategori=$selectedCategory";
+        "${AppConstants.baseURL}/API/getMenu.php?kategori=$selectedCategory";
     try {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data != null) {
+
+        if (data != null && data['data'] is List) {
           setState(() {
-            menuList = List.from(data).map((menu) {
-              return {
-                'foto_menu_url': menu['foto_menu_url'].toString(),
-                'nama_menu': menu['nama_menu'].toString(),
-                'harga_menu': menu['harga_menu'].toString(),
-                'deskripsi': menu['deskripsi'].toString(),
-                'id_menu': menu['id_menu'].toString(),
-              };
-            }).toList();
+            menuList = List.from(data['data']);
           });
         } else {
           setState(() {
@@ -62,11 +55,7 @@ class _HomePageState extends State<HomePage> {
         throw Exception('Gagal memuat menu');
       }
     } catch (e) {
-      print(e);
-      // Menangani kesalahan
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memuat menu, coba lagi.')),
-      );
+      print("Error: $e");
       setState(() {
         menuList = [];
       });
@@ -76,12 +65,13 @@ class _HomePageState extends State<HomePage> {
   void _changeCategory(String category) {
     setState(() {
       selectedCategory = category;
+      print("Kategori Terpilih: $selectedCategory");
       fetchMenuData();
     });
   }
 
   void _refreshMenuList() {
-    fetchMenuData(); // Refresh menu data
+    fetchMenuData();
   }
 
   @override
@@ -159,14 +149,16 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   var menu = menuList[index];
+
                   return MenuCard(
-                    imageUrl: menu['foto_menu_url'],
-                    title: menu['nama_menu'],
-                    price: 'Rp ${menu['harga_menu']}',
-                    description: menu['deskripsi'],
-                    idMenu: menu['id_menu'],
+                    imageUrl: menu['foto_menu_path'] ?? '',
+                    title: menu['nama_menu'] ?? 'Nama tidak tersedia',
+                    price: 'Rp ${menu['harga_menu'] ?? '0'}',
+                    description:
+                        menu['deskripsi'] ?? 'Deskripsi tidak tersedia',
+                    idMenu: menu['id_menu'] ?? '',
                     idPelanggan: idPelanggan,
-                    refreshMenuList: _refreshMenuList, // Pass refresh function
+                    refreshMenuList: _refreshMenuList,
                   );
                 },
               ),
