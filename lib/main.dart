@@ -28,10 +28,13 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/launcher': (BuildContext context) => LauncherPage(),
         '/login': (BuildContext context) => LoginPage(),
-        '/landing': (BuildContext context) => LandingPage(isDriver: false), // Ganti sesuai kebutuhan
-        '/driverLanding': (BuildContext context) => DriverLandingPage(), // Rute untuk DriverLandingPage
+        '/landing': (BuildContext context) =>
+            LandingPage(isDriver: false), // Ganti sesuai kebutuhan
+        '/driverLanding': (BuildContext context) =>
+            DriverLandingPage(), // Rute untuk DriverLandingPage
         '/riwayatPesan': (BuildContext context) => RiwayatTransaksiPage(),
-        '/editProfil': (BuildContext context) => EditProfilPage(idPelanggan: idPelanggan),
+        '/editProfil': (BuildContext context) =>
+            EditProfilPage(idPelanggan: idPelanggan),
         '/ratingPage': (BuildContext context) => RatingPage(),
         '/keranjang': (BuildContext context) => KeranjangPage(),
       },

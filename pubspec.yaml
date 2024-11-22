@@ -43,6 +43,8 @@ dependencies:
   intl: ^0.17.0
   flutter_launcher_icons: ^0.13.1
   flutter_rating_bar: ^4.0.0
+  google_maps_flutter: ^2.5.0
+  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:
@@ -59,11 +61,10 @@ flutter:
     - assets/images/Geprek.jpg
     - assets/images/Logo.png
     - assets/images/Menu1.png
-    - assets/images/Menu2.png  
+    - assets/images/Menu2.png
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: "AppIcon"
   image_path: "assets/images/llogo.png"
   remove_alpha_ios: true
-
