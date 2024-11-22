@@ -52,10 +52,14 @@ class UserModel {
 
   static Future<void> logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+
+    // Hapus data login
+    prefs.remove('id_driver');
+    prefs.remove('id_pelanggan');
   }
 
-  static Future<Map<String, dynamic>?> checkLogin(String url, String telepon, String password) async {
+  static Future<Map<String, dynamic>?> checkLogin(
+      String url, String telepon, String password) async {
     var params = "?telepon=$telepon&password=$password";
     var res = await http.get(Uri.parse(url + params));
 
@@ -65,8 +69,10 @@ class UserModel {
     return null;
   }
 
-  static Future<bool> checkDriverLogin(String url, String telepon, String password) async {
-    var params = "?telepon=$telepon&password=$password"; // Sesuaikan dengan endpoint API untuk driver
+  static Future<bool> checkDriverLogin(
+      String url, String telepon, String password) async {
+    var params =
+        "?telepon=$telepon&password=$password"; // Sesuaikan dengan endpoint API untuk driver
     var res = await http.get(Uri.parse(url + params));
 
     if (res.statusCode == 200) {

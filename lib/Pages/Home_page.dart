@@ -161,6 +161,7 @@ class _HomePageState extends State<HomePage> {
             CustomHeader(
               backgroundColor: Colors.green,
             ),
+            SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -221,6 +222,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextField(
@@ -267,35 +269,43 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: filteredMenuList.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                  childAspectRatio: 2 / 3,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  var menu = filteredMenuList[index];
+            // Menampilkan GridView atau pesan "Menu tidak tersedia"
+            filteredMenuList.isEmpty
+                ? Center(
+                    child: Text(
+                      'Menu tidak tersedia',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: filteredMenuList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                      childAspectRatio: 2 / 3,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      var menu = filteredMenuList[index];
 
-                  print(menu['foto_menu_path']);
-                  return MenuCard(
-                    imageUrl: menu['foto_menu_path'] ?? '',
-                    title: menu['nama_menu'] ?? 'Nama tidak tersedia',
-                    price: 'Rp ${menu['harga_menu'] ?? '0'}',
-                    description:
-                        menu['deskripsi'] ?? 'Deskripsi tidak tersedia',
-                    idMenu: menu['kategori_menu'] ?? '',
-                    idPelanggan: idPelanggan,
-                    refreshMenuList: fetchMenuData,
-                  );
-                },
-              ),
-            ),
+                      return MenuCard(
+                        imageUrl: menu['foto_menu_path'] ?? '',
+                        title: menu['nama_menu'] ?? 'Nama tidak tersedia',
+                        price: 'Rp ${menu['harga_menu'] ?? '0'}',
+                        description:
+                            menu['deskripsi'] ?? 'Deskripsi tidak tersedia',
+                        idMenu: menu['kategori_menu'] ?? '',
+                        idPelanggan: idPelanggan,
+                        refreshMenuList: fetchMenuData,
+                      );
+                    },
+                  ),
           ],
         ),
       ),

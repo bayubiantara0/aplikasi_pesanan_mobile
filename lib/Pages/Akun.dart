@@ -42,7 +42,8 @@ class Akun extends StatelessWidget {
                     elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton.icon(
                             icon: Icon(Icons.history),
@@ -123,10 +124,20 @@ class Akun extends StatelessWidget {
                         Container(
                           height: 250,
                           child: InAppWebView(
-                            initialUrlRequest: URLRequest(
-                              url: Uri.parse(
-                                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.888132250622!2d108.2788767758701!3d-6.408409362676406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6eb87d1fcaf97d%3A0x4fc15b3c8407ada4!2sPoliteknik%20Negeri%20Indramayu!5e0!3m2!1sid!2sid!4v1732261960329!5m2!1sid!2sid',
-                              ),
+                            initialData: InAppWebViewInitialData(
+                              data: """
+              <html>
+                <body style="margin:0px;padding:0px;">
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.888132250622!2d108.2788767758701!3d-6.408409362676406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6eb87d1fcaf97d%3A0x4fc15b3c8407ada4!2sPoliteknik%20Negeri%20Indramayu!5e0!3m2!1sid!2sid!4v1732261960329!5m2!1sid!2sid" 
+                    frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
+                  </iframe>
+                </body>
+              </html>
+            """,
+                              mimeType: "text/html",
                             ),
                             onLoadError: (controller, url, code, message) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -170,9 +181,15 @@ class Akun extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton.icon(
-                    icon: Icon(Icons.logout),
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
                     onPressed: () => _logOut(context),
-                    label: Text('Log Out'),
+                    label: Text(
+                      'Log Out',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       padding:
@@ -182,6 +199,7 @@ class Akun extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),

@@ -13,10 +13,12 @@ class CustomHeader extends StatelessWidget {
         bottomRight: Radius.circular(20),
       ),
       child: Container(
+        margin: EdgeInsets.only(top: 50),
         width: double.infinity,
         height: 56, // Mengubah tinggi header
         padding: EdgeInsets.symmetric(horizontal: 20),
-        color: backgroundColor ?? Colors.green[900], // Mengubah warna latar belakang
+        color: backgroundColor ??
+            Colors.green[900], // Mengubah warna latar belakang
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,7 +32,8 @@ class CustomHeader extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/keranjang'); // Navigasi ke halaman keranjang
+                Navigator.pushNamed(
+                    context, '/keranjang'); // Navigasi ke halaman keranjang
               },
               icon: Icon(
                 Icons.shopping_cart_outlined,
