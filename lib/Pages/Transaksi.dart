@@ -96,7 +96,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
   }
 
   Future<void> _clearCart(String idPelanggan) async {
-    final String url = "http://10.0.164.244/Proyek%203/API/keranjang.php";
+    final String url = "${AppConstants.baseURL}/keranjang.php";
     final response = await http.post(
       Uri.parse(url),
       body: {

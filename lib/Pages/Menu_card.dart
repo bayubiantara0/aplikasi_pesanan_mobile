@@ -49,11 +49,10 @@ class MenuCard extends StatelessWidget {
           );
         },
       );
-      refreshMenuList(); // Segarkan daftar menu setelah ditambahkan ke keranjang
+      refreshMenuList();
 
-      // Tunggu 0.5 detik sebelum menutup BottomSheet
       await Future.delayed(Duration(milliseconds: 500));
-      Navigator.pop(context); // Tutup BottomSheet
+      Navigator.pop(context);
     } else {
       showModalBottomSheet(
         context: context,
@@ -69,9 +68,8 @@ class MenuCard extends StatelessWidget {
         },
       );
 
-      // Tunggu 0.5 detik sebelum menutup BottomSheet
       await Future.delayed(Duration(milliseconds: 500));
-      Navigator.pop(context); // Tutup BottomSheet
+      Navigator.pop(context);
     }
   }
 

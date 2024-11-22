@@ -282,6 +282,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (BuildContext context, int index) {
                   var menu = filteredMenuList[index];
 
+                  print(menu['foto_menu_path']);
                   return MenuCard(
                     imageUrl: menu['foto_menu_path'] ?? '',
                     title: menu['nama_menu'] ?? 'Nama tidak tersedia',
